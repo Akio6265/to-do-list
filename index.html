@@ -78,12 +78,12 @@ cursor: pointer;
       .button:hover{
         color: rgb(129, 252, 129);
         box-shadow: 5px 3px 10px rgb(26, 26, 26, .2);
-transition: linear .2s;
+transition: linear .5s;
       }
       .button:active{
         color: rgb(153, 232, 153);
         box-shadow: 5px 3px 5px rgb(26, 26, 26, 1);
-transition: linear .2s;
+transition: linear .5s;
       }
       
         li{
@@ -122,12 +122,12 @@ ul:hover{
 .delete:hover{
   color: rgb(230, 106, 106);
         box-shadow: 5px 3px 10px rgb(26, 26, 26, .2);
-transition: linear .2s;
+transition: linear .5s;
 }
 .delete:active{
   color: rgb(255, 89, 89);
         box-shadow: 5px 3px 5px rgb(26, 26, 26, 1);
-transition: linear .2s;
+transition: linear .5s;
 }
 .done{
     text-decoration: line-through;
@@ -143,6 +143,15 @@ left: 50px;
 top: 20px;
 animation: ehe 2s infinite linear alternate-reverse;
 }
+.rotate{
+ 
+  transform: rotate(-360deg);
+  transition: .6s linear;
+}
+.anti{
+  transform: rotate(360deg);
+  transition: .6s linear;
+}
 @keyframes ehe {
   0%{
     top:20px;
@@ -157,11 +166,11 @@ animation: ehe 2s infinite linear alternate-reverse;
 </head>
 <body>
   
-    <img src="https://i.pinimg.com/564x/1c/b5/96/1cb596c855eb2aeb08476d420de1250d.jpg" alt="">
-
+  <img src="https://i.pinimg.com/564x/1c/b5/96/1cb596c855eb2aeb08476d420de1250d.jpg" alt="">
   
     <main>
 
+     
 
       <h1>
           To do list
@@ -186,7 +195,7 @@ let button =document.querySelector('button')
 const form = document.querySelector('form');
 const list = document.querySelector('ul');
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
+let image=document.querySelector('img');
 display();
 
 form.addEventListener('submit', (e) => {
@@ -224,7 +233,14 @@ function display() {
     diss(ehe);
   });
 }
+function sigh()
+{image.classList.toggle("rotate");
 
+  setTimeout(()=>{
+    image.classList.toggle("rotate");
+  },700)
+}
+button.addEventListener('click', sigh)
 function diss(eh) {
   const butt = document.createElement('button');
   butt.textContent = 'Delete';
@@ -250,6 +266,13 @@ function diss(eh) {
     tasks = tasks.filter((task) => task.id !== taskid);
     localStorage.setItem('tasks', JSON.stringify(tasks));
     e.target.parentNode.remove();
+  });
+  butt.addEventListener('click', ()=>{
+    image.classList.toggle("anti");
+
+  setTimeout(()=>{
+    image.classList.toggle("anti");
+  },700)
   });
 }
     </script>
