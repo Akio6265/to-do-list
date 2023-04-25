@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      
+  @import url('https://fonts.googleapis.com/css2?family=Sigmar&display=swap');
+
+        body{
+            background-color: rgb(37, 37, 37);
+        }
+
+        *{
+          font-family: 'Sigmar', cursive;
+          letter-spacing: 2px;
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          color: white;
+        }
+        main{
+            max-width: 600px;
+            display: flex;
+
+            flex-direction: column;
+            justify-content: space-around;
+            background-color: rgb(50, 50, 50);
+            height: auto;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: .5px solid black;
+            text-align: center;
+
+        }
+        h1{
+          margin: 20px;
+          padding: 10px;
+        }
+        form{
+width: 90%;
+display: flex;
+margin: 20px auto;
+border: 1px solid black;
+border-radius: 3px;
+padding: 10pxs;
+        }
+        input[type='text']{
+          all: unset;
+          color: rgb(36, 52, 66);
+         background-color: rgb(104, 104, 104);
+          flex: 1;
+          border: none;
+          padding: 2px 9px;
+          margin-right: 2px;
+          border-radius: 3px 0 0 3px;
+         box-shadow: inset 1px 1px 4px rgb(60, 60, 60, .3);
+        }
+        input[type='text']:focus{
+       border: 0;
+          box-shadow: 5px 3px 5px black;
+
+        }
+        input[type='text']::placeholder{
+          opacity: .2;
+          color: white;
+        }
+      .button{
+        all:unset;
+background-color: rgb(37, 37, 37);
+        height: 30px;
+padding: 5px 10px;
+cursor: pointer;
+       border-radius: 0 3px 3p 0;
+      }
+      .button:hover{
+        color: rgb(129, 252, 129);
+        box-shadow: 5px 3px 10px rgb(26, 26, 26, .2);
+transition: linear .5s;
+      }
+      .button:active{
+        color: rgb(153, 232, 153);
+        box-shadow: 5px 3px 5px rgb(26, 26, 26, 1);
+transition: linear .5s;
+      }
+      
+        li{
+            list-style: none;
+            text-align: center;
+            display: flex;
+            padding: 0 0 0 10px;
+  justify-content: space-between;
+  height: 50px;
+        }
+        span{
+          flex: 1;
+          text-align: start;
+          margin: auto 0;
+        }
+        ul{
+    all:unset;
+  
+ border-radius: 5px;
+    width: 90%;
+    padding: 0 0 0 10px;
+    margin:20px auto;
+  padding: 0px 5px;
+    
+}
+ul:hover{
+  background-color:rgb(60, 60, 60) ;
+}
+.delete{
+  all: unset;
+    height: 100%;
+    height: 100%;
+    cursor: pointer;
+   
+}
+.delete:hover{
+  color: rgb(230, 106, 106);
+        box-shadow: 5px 3px 10px rgb(26, 26, 26, .2);
+transition: linear .5s;
+}
+.delete:active{
+  color: rgb(255, 89, 89);
+        box-shadow: 5px 3px 5px rgb(26, 26, 26, 1);
+transition: linear .5s;
+}
+.done{
+    text-decoration: line-through;
+}
+img{
+height: 100px;
+border-radius: 50%;
+width: 100px;
+display: inline;
+position: absolute;
+background-color: rgb(255, 255, 255);
+left: 50px;
+top: 20px;
+animation: ehe 2s infinite linear alternate-reverse;
+}
+@keyframes ehe {
+  0%{
+    top:20px;
+  }
+  100%{
+    top: 150px
+  }
+  
+}
+
+    </style>
+</head>
+<body>
+  
+    <img src="https://i.pinimg.com/564x/1c/b5/96/1cb596c855eb2aeb08476d420de1250d.jpg" alt="">
+
+  
+    <main>
+
+
+      <h1>
+          To do list
+      </h1>
+      <form>
+          <input type="text" placeholder="text...">
+     
+          <button type='submit' class="button">
+            Add
+          </button>
+      </form>
+      <ul class="list">
+      </ul>
+    </main>
+    
+   
+     
+    
+    <script>
+      let inp = document.querySelector('input')
+let button =document.querySelector('button')
+const form = document.querySelector('form');
+const list = document.querySelector('ul');
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+display();
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  inptext = inp.value.trim()
+  if (inptext != '') {
+    const task =  {
+      id: Date.now(),
+      text: inptext,
+      completed: false
+    }
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    diss(task);
+    inp.value = '';
+  }
+});
+
+list.addEventListener('click', (e) => {
+  const targ = e.target;
+  if (targ.classList.contains('items')) {
+    const taskid = parseInt(e.target.id);
+    tasks.forEach((task) => {
+      if (task.id === taskid) {
+        task.completed = !task.completed;
+      }
+    });
+    targ.classList.toggle('done');
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+});
+
+function display() {
+  tasks.forEach((ehe) => {
+    diss(ehe);
+  });
+}
+
+function diss(eh) {
+  const butt = document.createElement('button');
+  butt.textContent = 'Delete';
+  butt.setAttribute('class', 'delete');
+  
+  const txt = document.createElement('li');
+  const span= document.createElement('span');
+
+  span.setAttribute('class', 'items');
+  txt.setAttribute('id', eh.id);
+  span.textContent = eh.text;
+  
+  if (eh.completed) {
+    txt.classList.add('done');
+  }
+  txt.appendChild(span);
+  txt.appendChild(butt);
+  list.appendChild(txt);
+  
+  
+  butt.addEventListener('click', (e) => {
+    const taskid = parseInt(e.target.parentNode.getAttribute('id'));
+    tasks = tasks.filter((task) => task.id !== taskid);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    e.target.parentNode.remove();
+  });
+}
+    </script>
+</body>
+</html>
